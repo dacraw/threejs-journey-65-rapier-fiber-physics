@@ -16,7 +16,11 @@ export default function Experience() {
     cube.current.applyImpulse({ x: 0, y: 5, z: 0 });
 
     // torque is keyword for rotation
-    cube.current.applyTorqueImpulse({ x: 0, y: 1, z: 0 });
+    cube.current.applyTorqueImpulse({
+      x: Math.random() - 0.5,
+      y: Math.random() - 0.5,
+      z: Math.random() - 0.5,
+    });
   };
 
   return (
@@ -29,7 +33,7 @@ export default function Experience() {
       <ambientLight intensity={1.5} />
 
       {/* use debug property to see physics bounding boxes (colliders; "cuboid" for box shape) around meshes (activating this affects performance) */}
-      <Physics debug>
+      <Physics debug gravity={[0, -1.6, 0]}>
         {/* set collider using the property */}
         <RigidBody colliders="ball">
           <mesh castShadow position={[-1.5, 2, 0]}>
@@ -38,7 +42,8 @@ export default function Experience() {
           </mesh>
         </RigidBody>
 
-        <RigidBody position={[1.5, 2, 0]} ref={cube}>
+        {/* gravity scale allows individual gravity settings */}
+        <RigidBody position={[1.5, 2, 0]} ref={cube} gravityScale={0.2}>
           <mesh castShadow onClick={cubeJump}>
             <boxGeometry />
             <meshStandardMaterial color="mediumpurple" />
