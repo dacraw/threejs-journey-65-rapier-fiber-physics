@@ -1,5 +1,5 @@
 import { OrbitControls } from "@react-three/drei";
-import { Physics, RigidBody } from "@react-three/rapier";
+import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
 import { Perf } from "r3f-perf";
 
 export default function Experience() {
@@ -22,13 +22,15 @@ export default function Experience() {
           </mesh>
         </RigidBody>
 
-        {/* trimesh collider creates collider with a hole for the torus knot; this is not performant with rigid collider bodies. trimesh colliders are empty on the inside, making collision detection more complicated and prone to bugs (avoid using trimesh for moving objects; for the floor/terrain it's ok) */}
-        <RigidBody colliders="trimesh">
-          <mesh
-            castShadow
-            position={[0, 1, 0]}
-            rotation={[Math.PI * 0.5, 0, 0]}
-          >
+        {/*  applying position/rotation helps CuboidCollider arg values match the mesh */}
+        <RigidBody
+          colliders={false}
+          position={[0, 1, 0]}
+          rotation={[Math.PI * 0.5, 0, 0]}
+        >
+          {/* the args below starts at center, the "half widths"; so it's like 2,2,2 */}
+          <CuboidCollider args={[1.5, 1.5, 0.5]} />
+          <mesh castShadow>
             <torusGeometry args={[1, 0.5, 16, 32]} />
             <meshStandardMaterial color="mediumpurple" />
           </mesh>
