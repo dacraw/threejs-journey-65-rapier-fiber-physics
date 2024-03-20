@@ -40,20 +40,23 @@ export default function Experience() {
           </mesh>
         </RigidBody>
 
-        {/* like restitution, friction is average between the colliding objects */}
+        {/* we have to create our own colliders in order to change indinvidual mass of objects (note that mass doesn't account for air friction inherently) */}
         <RigidBody
           position={[1.5, 2, 0]}
           ref={cube}
           restitution={0}
-          friction={0}
+          friction={0.7}
+          colliders={false}
         >
           <mesh castShadow onClick={cubeJump}>
             <boxGeometry />
             <meshStandardMaterial color="mediumpurple" />
           </mesh>
+          {/* note that mass doesn't make something fall faster in this world */}
+          <CuboidCollider args={[0.5, 0.5, 0.5]} mass={0.5} />
         </RigidBody>
 
-        <RigidBody type="fixed" friction={0}>
+        <RigidBody type="fixed">
           <mesh receiveShadow position-y={-1.25}>
             <boxGeometry args={[10, 0.5, 10]} />
             <meshStandardMaterial color="greenyellow" />
