@@ -40,15 +40,20 @@ export default function Experience() {
           </mesh>
         </RigidBody>
 
-        {/* restitution is bounciness; set it on the floor so the cube bounces perfectly */}
-        <RigidBody position={[1.5, 2, 0]} ref={cube} restitution={1}>
+        {/* like restitution, friction is average between the colliding objects */}
+        <RigidBody
+          position={[1.5, 2, 0]}
+          ref={cube}
+          restitution={0}
+          friction={0}
+        >
           <mesh castShadow onClick={cubeJump}>
             <boxGeometry />
             <meshStandardMaterial color="mediumpurple" />
           </mesh>
         </RigidBody>
 
-        <RigidBody type="fixed" restitution={1}>
+        <RigidBody type="fixed" friction={0}>
           <mesh receiveShadow position-y={-1.25}>
             <boxGeometry args={[10, 0.5, 10]} />
             <meshStandardMaterial color="greenyellow" />
