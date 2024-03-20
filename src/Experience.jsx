@@ -14,7 +14,8 @@ export default function Experience() {
 
       {/* use debug property to see physics bounding boxes (colliders; "cuboid" for box shape) around meshes (activating this affects performance) */}
       <Physics debug>
-        <RigidBody>
+        {/* set collider using the property */}
+        <RigidBody colliders="ball">
           <mesh castShadow position={[-2, 2, 0]}>
             <sphereGeometry />
             <meshStandardMaterial color="orange" />
