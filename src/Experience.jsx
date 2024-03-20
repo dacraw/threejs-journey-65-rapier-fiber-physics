@@ -32,9 +32,7 @@ export default function Experience() {
       <directionalLight castShadow position={[1, 2, 3]} intensity={4.5} />
       <ambientLight intensity={1.5} />
 
-      {/* use debug property to see physics bounding boxes (colliders; "cuboid" for box shape) around meshes (activating this affects performance) */}
-      <Physics debug gravity={[0, -1.6, 0]}>
-        {/* set collider using the property */}
+      <Physics debug>
         <RigidBody colliders="ball">
           <mesh castShadow position={[-1.5, 2, 0]}>
             <sphereGeometry />
@@ -42,15 +40,15 @@ export default function Experience() {
           </mesh>
         </RigidBody>
 
-        {/* gravity scale allows individual gravity settings */}
-        <RigidBody position={[1.5, 2, 0]} ref={cube} gravityScale={0.2}>
+        {/* restitution is bounciness; set it on the floor so the cube bounces perfectly */}
+        <RigidBody position={[1.5, 2, 0]} ref={cube} restitution={1}>
           <mesh castShadow onClick={cubeJump}>
             <boxGeometry />
             <meshStandardMaterial color="mediumpurple" />
           </mesh>
         </RigidBody>
 
-        <RigidBody type="fixed">
+        <RigidBody type="fixed" restitution={1}>
           <mesh receiveShadow position-y={-1.25}>
             <boxGeometry args={[10, 0.5, 10]} />
             <meshStandardMaterial color="greenyellow" />
