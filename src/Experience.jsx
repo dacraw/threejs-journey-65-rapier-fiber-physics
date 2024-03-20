@@ -1,4 +1,5 @@
 import { OrbitControls } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 import {
   Physics,
   RigidBody,
@@ -7,9 +8,11 @@ import {
 } from "@react-three/rapier";
 import { Perf } from "r3f-perf";
 import { useRef } from "react";
+import * as THREE from "three";
 
 export default function Experience() {
   const cube = useRef();
+  const twister = useRef();
 
   const cubeJump = () => {
     // using mass we can make the cube jump the same irregardless of mass
@@ -25,6 +28,16 @@ export default function Experience() {
       z: Math.random() - 0.5,
     });
   };
+
+  useFrame((state) => {
+    const time = state.clock.elapsedTime;
+
+    const eulerRotation = new THREE.Euler(0, time * 3, 0);
+    const quaternionRotation = new THREE.Quaternion();
+    quaternionRotation.setFromEuler(eulerRotation);
+
+    twister.current.setNextKinematicRotation(quaternionRotation);
+  });
 
   return (
     <>
@@ -43,7 +56,22 @@ export default function Experience() {
           </mesh>
         </RigidBody>
 
-        {/* we have to create our own colliders in order to change indinvidual mass of objects (note that mass doesn't account for air friction inherently) */}
+        {/* // do not change position/rotation at runtime; if you MUST (i.e. reset car to original position in a game) then:
+        // #1 reset velocities
+        // #2 if u need to move something like a carousel or moving obstacle, use "kinematic" type */}
+
+        <RigidBody
+          ref={twister}
+          position={[0, -0.8, 0]}
+          friction={0}
+          type="kinematicPosition" // kinematic position type won't move if another object collides with it; only way to move it manually applying forces to it
+        >
+          <mesh castShadow scale={[0.4, 0.4, 3]}>
+            <boxGeometry />
+            <meshStandardMaterial color="red" />
+          </mesh>
+        </RigidBody>
+
         <RigidBody
           position={[1.5, 2, 0]}
           ref={cube}
