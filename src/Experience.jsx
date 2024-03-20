@@ -12,7 +12,8 @@ export default function Experience() {
       <directionalLight castShadow position={[1, 2, 3]} intensity={4.5} />
       <ambientLight intensity={1.5} />
 
-      <Physics>
+      {/* use debug property to see physics bounding boxes (colliders; "cuboid" for box shape) around meshes (activating this affects performance) */}
+      <Physics debug>
         <RigidBody>
           <mesh castShadow position={[-2, 2, 0]}>
             <sphereGeometry />
@@ -21,8 +22,13 @@ export default function Experience() {
         </RigidBody>
 
         <RigidBody>
+          {/* multiple meshes form the same rigid body */}
           <mesh castShadow position={[2, 2, 0]}>
-            <boxGeometry />
+            <boxGeometry args={[3, 2, 1]} />
+            <meshStandardMaterial color="mediumpurple" />
+          </mesh>
+          <mesh castShadow position={[2, 2, 3]}>
+            <boxGeometry args={[1, 1, 1]} />
             <meshStandardMaterial color="mediumpurple" />
           </mesh>
         </RigidBody>
