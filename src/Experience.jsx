@@ -6,8 +6,19 @@ import {
   BallCollider,
 } from "@react-three/rapier";
 import { Perf } from "r3f-perf";
+import { useRef } from "react";
 
 export default function Experience() {
+  const cube = useRef();
+
+  const cubeJump = () => {
+    // impulse sends in direction using vec3
+    cube.current.applyImpulse({ x: 0, y: 5, z: 0 });
+
+    // torque is keyword for rotation
+    cube.current.applyTorqueImpulse({ x: 0, y: 1, z: 0 });
+  };
+
   return (
     <>
       <Perf position="top-left" />
@@ -21,21 +32,15 @@ export default function Experience() {
       <Physics debug>
         {/* set collider using the property */}
         <RigidBody colliders="ball">
-          <mesh castShadow position={[0, 4, 0]}>
+          <mesh castShadow position={[-1.5, 2, 0]}>
             <sphereGeometry />
             <meshStandardMaterial color="orange" />
           </mesh>
         </RigidBody>
 
-        {/*  applying position/rotation helps CuboidCollider arg values match the mesh */}
-        <RigidBody
-          colliders={false}
-          position={[0, 1, 0]}
-          rotation={[Math.PI * 0.5, 0, 0]}
-        >
-          <BallCollider args={[1.5]} />
-          <mesh castShadow>
-            <torusGeometry args={[1, 0.5, 16, 32]} />
+        <RigidBody position={[1.5, 2, 0]} ref={cube}>
+          <mesh castShadow onClick={cubeJump}>
+            <boxGeometry />
             <meshStandardMaterial color="mediumpurple" />
           </mesh>
         </RigidBody>
