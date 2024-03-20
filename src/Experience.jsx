@@ -22,12 +22,12 @@ export default function Experience() {
           </mesh>
         </RigidBody>
 
-        {/* hull (convex hull) helps wrap the shape more accurately with a collider */}
-        <RigidBody colliders="hull">
+        {/* trimesh collider creates collider with a hole for the torus knot; this is not performant with rigid collider bodies. trimesh colliders are empty on the inside, making collision detection more complicated and prone to bugs (avoid using trimesh for moving objects; for the floor/terrain it's ok) */}
+        <RigidBody colliders="trimesh">
           <mesh
             castShadow
             position={[0, 1, 0]}
-            rotation={[Math.PI * 0.1, 0, 0]}
+            rotation={[Math.PI * 0.5, 0, 0]}
           >
             <torusGeometry args={[1, 0.5, 16, 32]} />
             <meshStandardMaterial color="mediumpurple" />
