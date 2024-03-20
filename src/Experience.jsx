@@ -12,8 +12,11 @@ export default function Experience() {
   const cube = useRef();
 
   const cubeJump = () => {
+    // using mass we can make the cube jump the same irregardless of mass
+    const mass = cube.current.mass();
+
     // impulse sends in direction using vec3
-    cube.current.applyImpulse({ x: 0, y: 5, z: 0 });
+    cube.current.applyImpulse({ x: 0, y: 5 * mass, z: 0 });
 
     // torque is keyword for rotation
     cube.current.applyTorqueImpulse({
