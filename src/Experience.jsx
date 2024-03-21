@@ -117,41 +117,11 @@ export default function Experience() {
           </mesh>
         </RigidBody>
 
-        {/* walls */}
         <RigidBody type="fixed">
-          <mesh receiveShadow position={[0, -0.5, -4.9]}>
-            <boxGeometry args={[10, 1, 0.25]} />
-            <meshStandardMaterial color="greenyellow" />
-          </mesh>
-        </RigidBody>
-
-        <RigidBody type="fixed">
-          <mesh receiveShadow position={[0, -0.5, 4.9]}>
-            <boxGeometry args={[10, 1, 0.25]} />
-            <meshStandardMaterial color="greenyellow" />
-          </mesh>
-        </RigidBody>
-
-        <RigidBody type="fixed">
-          <mesh
-            receiveShadow
-            position={[4.9, -0.5, 0]}
-            rotation-y={Math.PI * 0.5}
-          >
-            <boxGeometry args={[10, 1, 0.25]} />
-            <meshStandardMaterial color="greenyellow" />
-          </mesh>
-        </RigidBody>
-
-        <RigidBody type="fixed">
-          <mesh
-            receiveShadow
-            position={[-4.9, -0.5, 0]}
-            rotation-y={Math.PI * 0.5}
-          >
-            <boxGeometry args={[10, 1, 0.25]} />
-            <meshStandardMaterial color="greenyellow" />
-          </mesh>
+          <CuboidCollider args={[5, 2, 0.5]} position={[0, 1, 5.25]} />
+          <CuboidCollider args={[5, 2, 0.5]} position={[0, 1, -5.25]} />
+          <CuboidCollider args={[0.5, 2, 5]} position={[5.25, 1, 0]} />
+          <CuboidCollider args={[0.5, 2, 5]} position={[-5.25, 1, 0]} />
         </RigidBody>
 
         <RigidBody position={[0, 4, 0]} colliders={false}>
