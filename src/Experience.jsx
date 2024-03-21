@@ -57,7 +57,7 @@ export default function Experience() {
     twister.current.setNextKinematicTranslation({ x, y: -0.8, z });
   });
 
-  const cubesCount = 3;
+  const cubesCount = 100;
 
   const instances = useMemo(() => {
     const instances = [];
@@ -65,8 +65,12 @@ export default function Experience() {
     for (let i = 0; i < cubesCount; i++) {
       instances.push({
         key: `instance_${i}`,
-        position: [i * 2, 0, 0],
-        rotation: [0, 0, 0],
+        position: [
+          (Math.random() - 0.5) * 8,
+          6 + i * 0.2,
+          (Math.random() - 0.5) * 8,
+        ],
+        rotation: [Math.random(), Math.random(), Math.random()],
       });
     }
 
@@ -82,7 +86,7 @@ export default function Experience() {
       <directionalLight castShadow position={[1, 2, 3]} intensity={4.5} />
       <ambientLight intensity={1.5} />
 
-      <Physics debug>
+      <Physics debug={false}>
         <RigidBody colliders="ball">
           <mesh castShadow position={[-1.5, 2, 0]}>
             <sphereGeometry />
