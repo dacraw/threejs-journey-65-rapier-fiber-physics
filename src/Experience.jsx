@@ -1,4 +1,4 @@
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { CubeCamera, OrbitControls, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import {
   Physics,
@@ -9,7 +9,7 @@ import {
   InstancedRigidBodies,
 } from "@react-three/rapier";
 import { Perf } from "r3f-perf";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
 export default function Experience() {
@@ -41,22 +41,6 @@ export default function Experience() {
     // hitSound.play();
   };
 
-  const cubesCount = 3;
-  const cubes = useRef();
-
-  // example of how to set instanced meshes using r3f
-  useEffect(() => {
-    for (let i = 0; i < cubesCount; i++) {
-      const matrix = new THREE.Matrix4();
-      matrix.compose(
-        new THREE.Vector3(i * 2, 0, 0),
-        new THREE.Quaternion(),
-        new THREE.Vector3(1, 1, 1)
-      );
-      cubes.current.setMatrixAt(i, matrix);
-    }
-  }, []);
-
   useFrame((state) => {
     const time = state.clock.elapsedTime;
 
@@ -72,6 +56,22 @@ export default function Experience() {
 
     twister.current.setNextKinematicTranslation({ x, y: -0.8, z });
   });
+
+  const cubesCount = 3;
+
+  const instances = useMemo(() => {
+    const instances = [];
+
+    for (let i = 0; i < cubesCount; i++) {
+      instances.push({
+        key: `instance_${i}`,
+        position: [i * 2, 0, 0],
+        rotation: [0, 0, 0],
+      });
+    }
+
+    return instances;
+  }, []);
 
   return (
     <>
@@ -146,11 +146,13 @@ export default function Experience() {
           <CuboidCollider args={[0.5, 2, 5]} position={[-5.25, 1, 0]} />
         </RigidBody>
 
-        {/* requires geometry, material, and # of instances; passing null allows us to create the meshes ourselves */}
-        <instancedMesh castShadow ref={cubes} args={[null, null, cubesCount]}>
-          <boxGeometry />
-          <meshStandardMaterial color="tomato" />
-        </instancedMesh>
+        <InstancedRigidBodies instances={instances}>
+          {/* requires geometry, material, and # of instances; passing null allows us to create the meshes ourselves */}
+          <instancedMesh castShadow args={[null, null, cubesCount]}>
+            <boxGeometry />
+            <meshStandardMaterial color="tomato" />
+          </instancedMesh>
+        </InstancedRigidBodies>
       </Physics>
     </>
   );
