@@ -33,9 +33,9 @@ export default function Experience() {
   };
 
   const collisionEnter = () => {
-    hitSound.currentTime = 0;
-    hitSound.volume = Math.random();
-    hitSound.play();
+    // hitSound.currentTime = 0;
+    // hitSound.volume = Math.random();
+    // hitSound.play();
   };
 
   useFrame((state) => {
@@ -94,6 +94,11 @@ export default function Experience() {
           friction={0.7}
           colliders={false}
           onCollisionEnter={collisionEnter}
+          // collision exit is when the object it's separated from the object it's touching
+          // onCollisionExit={() => {console.log('exit')}}
+          // onSleep and onWake - when object stops moving, it's "sleeping" and won't update until it collides or is updated
+          //   onSleep={() => console.log("sleeping")}
+          //   onWake={() => console.log("wake")}
         >
           <mesh castShadow onClick={cubeJump}>
             <boxGeometry />
