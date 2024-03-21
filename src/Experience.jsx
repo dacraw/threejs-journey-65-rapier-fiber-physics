@@ -6,9 +6,10 @@ import {
   CuboidCollider,
   BallCollider,
   CylinderCollider,
+  InstancedRigidBodies,
 } from "@react-three/rapier";
 import { Perf } from "r3f-perf";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
 export default function Experience() {
@@ -39,6 +40,22 @@ export default function Experience() {
     // hitSound.volume = Math.random();
     // hitSound.play();
   };
+
+  const cubesCount = 3;
+  const cubes = useRef();
+
+  // example of how to set instanced meshes using r3f
+  useEffect(() => {
+    for (let i = 0; i < cubesCount; i++) {
+      const matrix = new THREE.Matrix4();
+      matrix.compose(
+        new THREE.Vector3(i * 2, 0, 0),
+        new THREE.Quaternion(),
+        new THREE.Vector3(1, 1, 1)
+      );
+      cubes.current.setMatrixAt(i, matrix);
+    }
+  }, []);
 
   useFrame((state) => {
     const time = state.clock.elapsedTime;
@@ -117,6 +134,11 @@ export default function Experience() {
           </mesh>
         </RigidBody>
 
+        <RigidBody position={[0, 4, 0]} colliders={false}>
+          <primitive object={hamburger.scene} scale={0.25} />
+          <CylinderCollider args={[0.5, 1.25]} />
+        </RigidBody>
+
         <RigidBody type="fixed">
           <CuboidCollider args={[5, 2, 0.5]} position={[0, 1, 5.25]} />
           <CuboidCollider args={[5, 2, 0.5]} position={[0, 1, -5.25]} />
@@ -124,10 +146,11 @@ export default function Experience() {
           <CuboidCollider args={[0.5, 2, 5]} position={[-5.25, 1, 0]} />
         </RigidBody>
 
-        <RigidBody position={[0, 4, 0]} colliders={false}>
-          <primitive object={hamburger.scene} scale={0.25} />
-          <CylinderCollider args={[0.5, 1.25]} />
-        </RigidBody>
+        {/* requires geometry, material, and # of instances; passing null allows us to create the meshes ourselves */}
+        <instancedMesh castShadow ref={cubes} args={[null, null, cubesCount]}>
+          <boxGeometry />
+          <meshStandardMaterial color="tomato" />
+        </instancedMesh>
       </Physics>
     </>
   );
