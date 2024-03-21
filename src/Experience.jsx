@@ -37,6 +37,12 @@ export default function Experience() {
     quaternionRotation.setFromEuler(eulerRotation);
 
     twister.current.setNextKinematicRotation(quaternionRotation);
+
+    const angle = time * 0.5;
+    const x = Math.cos(angle) * 2;
+    const z = Math.sin(angle) * 2;
+
+    twister.current.setNextKinematicTranslation({ x, y: -0.8, z });
   });
 
   return (
