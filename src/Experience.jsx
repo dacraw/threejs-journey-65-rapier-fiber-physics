@@ -117,9 +117,46 @@ export default function Experience() {
           </mesh>
         </RigidBody>
 
-        <RigidBody position={[0, 4, 0]} colliders="trimesh">
+        {/* walls */}
+        <RigidBody type="fixed">
+          <mesh receiveShadow position={[0, -0.5, -4.9]}>
+            <boxGeometry args={[10, 1, 0.25]} />
+            <meshStandardMaterial color="greenyellow" />
+          </mesh>
+        </RigidBody>
+
+        <RigidBody type="fixed">
+          <mesh receiveShadow position={[0, -0.5, 4.9]}>
+            <boxGeometry args={[10, 1, 0.25]} />
+            <meshStandardMaterial color="greenyellow" />
+          </mesh>
+        </RigidBody>
+
+        <RigidBody type="fixed">
+          <mesh
+            receiveShadow
+            position={[4.9, -0.5, 0]}
+            rotation-y={Math.PI * 0.5}
+          >
+            <boxGeometry args={[10, 1, 0.25]} />
+            <meshStandardMaterial color="greenyellow" />
+          </mesh>
+        </RigidBody>
+
+        <RigidBody type="fixed">
+          <mesh
+            receiveShadow
+            position={[-4.9, -0.5, 0]}
+            rotation-y={Math.PI * 0.5}
+          >
+            <boxGeometry args={[10, 1, 0.25]} />
+            <meshStandardMaterial color="greenyellow" />
+          </mesh>
+        </RigidBody>
+
+        <RigidBody position={[0, 4, 0]} colliders={false}>
           <primitive object={hamburger.scene} scale={0.25} />
-          {/* <CylinderCollider args={[0.5, 1.25]} /> */}
+          <CylinderCollider args={[0.5, 1.25]} />
         </RigidBody>
       </Physics>
     </>
