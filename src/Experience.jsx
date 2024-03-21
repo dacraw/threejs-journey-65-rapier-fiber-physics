@@ -7,12 +7,15 @@ import {
   BallCollider,
 } from "@react-three/rapier";
 import { Perf } from "r3f-perf";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import * as THREE from "three";
 
 export default function Experience() {
   const cube = useRef();
   const twister = useRef();
+
+  // this instantiates the audio only once, no matter how many re-renders
+  const [hitSound] = useState(() => new Audio("./hit.mp3"));
 
   const cubeJump = () => {
     // using mass we can make the cube jump the same irregardless of mass
@@ -27,6 +30,12 @@ export default function Experience() {
       y: Math.random() - 0.5,
       z: Math.random() - 0.5,
     });
+  };
+
+  const collisionEnter = () => {
+    hitSound.currentTime = 0;
+    hitSound.volume = Math.random();
+    hitSound.play();
   };
 
   useFrame((state) => {
@@ -84,6 +93,7 @@ export default function Experience() {
           restitution={0}
           friction={0.7}
           colliders={false}
+          onCollisionEnter={collisionEnter}
         >
           <mesh castShadow onClick={cubeJump}>
             <boxGeometry />
