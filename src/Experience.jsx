@@ -1,4 +1,4 @@
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import {
   Physics,
@@ -13,6 +13,7 @@ import * as THREE from "three";
 export default function Experience() {
   const cube = useRef();
   const twister = useRef();
+  const hamburger = useGLTF("./hamburger.glb");
 
   // this instantiates the audio only once, no matter how many re-renders
   const [hitSound] = useState(() => new Audio("./hit.mp3"));
@@ -113,6 +114,10 @@ export default function Experience() {
             <boxGeometry args={[10, 0.5, 10]} />
             <meshStandardMaterial color="greenyellow" />
           </mesh>
+        </RigidBody>
+
+        <RigidBody position={[0, 4, 0]}>
+          <primitive object={hamburger.scene} scale={0.25} />
         </RigidBody>
       </Physics>
     </>
